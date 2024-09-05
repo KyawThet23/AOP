@@ -1,9 +1,7 @@
 package com.kth.demo;
 
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -24,5 +22,20 @@ public class LoggingAspect {
     public void afterReturningAdvice(Object result) {
         System.out.println("AfterReturning Advice: Method doSomething() returned with value: " + result);
     }
+
+    @AfterThrowing(pointcut = "execution(* com.example.demo.service.MyService.doSomething(..))", throwing = "exception")
+    public void afterThrowingAdvice(Exception exception) {
+        System.out.println("AfterThrowing Advice: An exception has been thrown: " + exception.getMessage());
+    }
+
+    @Around("execution(* com.example.demo.service.MyService.doSomething(..))")
+    public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        System.out.println("Around Advice (Before): Before method execution.");
+        Object result = proceedingJoinPoint.proceed(); // Proceed to the target method
+        System.out.println("Around Advice (After): After method execution.");
+        return result;
+    }
+
+
 
 }

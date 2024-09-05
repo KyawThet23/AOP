@@ -10,7 +10,7 @@ public class Controller {
     @Autowired
     private Service service;
 
-    @GetMapping("/do-something")
+    @GetMapping("/doSomething")
     public String doSomething() {
         service.doSomething();
         return "Method doSomething() has been executed!";
